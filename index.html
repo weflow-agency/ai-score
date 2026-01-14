@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8">
     <title>The AI Visibility Score | WeFlow</title>
+
+    <meta name="title" content="AI Visibility Score">
+    <meta name="description" content="Do ChatGPT and Gemini know you exist? Find out in 30 seconds.">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AI Visibility Score">
+    <meta property="og:description" content="Do ChatGPT and Gemini know you exist? Find out in 30 seconds.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1677442136019-21780ecad995">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -109,7 +118,7 @@
     </div>
 
     <script>
-      const API_URL = "https://script.google.com/macros/s/AKfycbzT5Heq04KIa_LSx5YEa5NsyuO8ZXTkrdn7S86QfeHZaUn3rYYvUqBNFoo_sgoIhYhfKg/exec"; 
+      const API_URL = "https://script.google.com/macros/s/AKfycbw5mExii-rASKzOLC9ar9OhdR4dWICveIS5WKs4nC4CCad_-96hhxfwlfR3mYWlS0lEUw/exec"; 
 
       window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -140,10 +149,15 @@
         fetch(API_URL, {
           method: "POST",
           body: JSON.stringify({ brand: brand, url: url, industry: industry, email: email })
-        }).then(res => res.json()).then(data => {
+        })
+        .then(res => res.json())
+        .then(data => {
            if(data.status === "success") {
-             var l = window.location.origin + window.location.pathname + "?reportId=" + data.data.shareLink.split('reportId=')[1];
-             document.getElementById('shareLinkInput').value = l;
+             // This ensures the copied link matches the exact URL the user is currently on
+             var currentUrl = window.location.origin + window.location.pathname;
+             var newShareLink = currentUrl + "?reportId=" + data.data.shareLink.split('reportId=')[1];
+             
+             document.getElementById('shareLinkInput').value = newShareLink;
              renderResults(data.data);
            } else { alert("Error: " + data.message); location.reload(); }
         }).catch(err => { alert("Connection Error."); location.reload(); });
